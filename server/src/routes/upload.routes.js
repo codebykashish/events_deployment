@@ -7,9 +7,17 @@ const { protect } = require('../middleware/auth')
 
 const router = express.Router()
 
-const uploadDir = path.join(__dirname, '../../uploads')
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true })
+// On serverless platforms like Vercel, use /tmp if writing locally
+const uploadDir = process.env.VERCEL
+  ? '/tmp/uploads'
+  : path.join(__dirname, '../../uploads')
+
+try {
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true })
+  }
+} catch (e) {
+  console.warn('Could not create upload directory:', e.message)
 }
 
 cloudinary.config({
