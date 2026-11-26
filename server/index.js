@@ -3,9 +3,19 @@
 const app = require('./src/app');
 const connectDB = require('./src/config/db');
 
-// Connect to MongoDB
-connectDB().catch((err) => {
-  console.error('Failed to connect to MongoDB on startup:', err.message);
+// Middleware to ensure database is connected before processing requests
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection middleware error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed',
+      error: error.message,
+    });
+  }
 });
 
 module.exports = app;
