@@ -1,28 +1,39 @@
 // db.js
-// Handles the connection between our Express server and MongoDB.
-// We call this once when the server starts.
-// Mongoose is the library that lets us use JavaScript to talk to MongoDB.
-
+// Handles MongoDB connection with caching for serverless environments.
 const mongoose = require('mongoose');
 
+let cached = global.mongoose;
+
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
+}
+
 const connectDB = async () => {
-  // MONGODB_URI comes from the .env file — never hard-coded here.
-  // Example value: mongodb://127.0.0.1:27017/campuspulse
   const uri = process.env.MONGODB_URI;
 
   if (!uri) {
-    // If the .env file is missing or the variable is not set, stop immediately.
-    console.error('ERROR: MONGODB_URI is not set in your .env file.');
-    process.exit(1);
+    console.error('ERROR: MONGODB_URI is not set in environment variables.');
+    return;
+  }
+
+  if (cached.conn) {
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(uri, {
+      bufferCommands: false,
+    }).then((m) => m);
   }
 
   try {
-    await mongoose.connect(uri);
-    console.log(`MongoDB connected: ${mongoose.connection.host}`);
+    cached.conn = await cached.promise;
+    console.log(`MongoDB connected: ${cached.conn.connection.host}`);
+    return cached.conn;
   } catch (error) {
+    cached.promise = null;
     console.error(`MongoDB connection failed: ${error.message}`);
-    // Exit the process so we do not run a server with no database.
-    process.exit(1);
+    throw error;
   }
 };
 
