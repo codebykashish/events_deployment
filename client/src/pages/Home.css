@@ -1,0 +1,1292 @@
+/* ─── Home Page Root ──────────────────────────────────────────────────────── */
+.home-page-root {
+  width: 100%;
+  background-color: #faf8f7;
+  color: #1f2937;
+  overflow-x: hidden;
+  font-family: var(--font-family);
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.section-eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #881421;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.brand-red-text {
+  color: #881421;
+}
+
+/* ─── 1. Full-Screen Desktop Hero ────────────────────────────────────────── */
+.hero-banner-fullscreen {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 24px 80px;
+  overflow: hidden;
+  border-radius: 0 0 52px 52px;
+  background-color: #2c1a1d;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.hero-bg-media {
+  position: absolute;
+  inset: 0;
+  background-image: url('/1st.jpeg');
+  background-size: cover;
+  background-position: center 30%;
+  transform: scale(1.02);
+  filter: brightness(0.92);
+}
+
+.hero-gradient-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(136, 20, 33, 0.42) 0%, rgba(15, 10, 12, 0.78) 100%),
+              linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(20, 10, 14, 0.85) 100%);
+  backdrop-filter: blur(2px);
+}
+
+.hero-content-center {
+  position: relative;
+  z-index: 2;
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #881421;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+.hero-headline {
+  font-size: 58px;
+  line-height: 1.1;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  margin: 0 0 18px;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+}
+
+.hero-cursive {
+  font-family: var(--font-cursive);
+  font-style: italic;
+  font-weight: 700;
+  color: #ffd2d7;
+  padding-left: 4px;
+}
+
+.hero-subtext {
+  font-size: 18px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 680px;
+  margin: 0 auto 36px;
+  font-weight: 400;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Floating Search Bar inside Hero */
+.hero-search-card {
+  width: 100%;
+  max-width: 720px;
+  background: #ffffff;
+  padding: 8px 10px 8px 18px;
+  border-radius: 999px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.28);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 34px;
+}
+
+.hero-search-input-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-search-input-wrap .search-icon {
+  color: #881421;
+}
+
+.hero-search-input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14.5px;
+  color: #111827;
+  font-family: inherit;
+}
+
+.hero-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.btn-hero-search {
+  background-color: #881421;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-hero-search:hover {
+  background-color: #700f1a;
+  transform: translateY(-1px);
+}
+
+.hero-search-or {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.btn-hero-browse {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f3f4f6;
+  color: #374151;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.btn-hero-browse:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+  text-decoration: none;
+}
+
+/* Quick stats inside Hero */
+.hero-quick-stats {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(10px);
+  padding: 12px 28px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.quick-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-size: 16px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 24px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* ─── 2. Upcoming Events Section ─────────────────────────────────────────── */
+.events-showcase-section {
+  padding: 90px 0 80px;
+  background-color: #faf8f7;
+}
+
+.showcase-header-centered {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 48px;
+}
+
+.showcase-title {
+  font-size: 38px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+}
+
+.showcase-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.upcoming-events-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;          /* more breathing room between cards */
+  align-items: stretch;  /* equal height cards */
+}
+
+.events-showcase-loading,
+.showcase-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #881421;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 14px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.explore-more-wrap {
+  text-align: center;
+  margin-top: 48px;
+}
+
+.btn-explore-more {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #881421;
+  color: #ffffff !important;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 13px 36px;
+  border-radius: 999px;
+  text-decoration: none;
+  box-shadow: 0 8px 24px rgba(136, 20, 33, 0.22);
+  transition: all 0.2s ease;
+}
+
+.btn-explore-more:hover {
+  background-color: #700f1a;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(136, 20, 33, 0.3);
+  text-decoration: none;
+}
+
+/* ─── 3. Zig-Zag Problem & Solution Section ──────────────────────────────── */
+.story-zigzag-section {
+  padding: 100px 0;
+  background-color: #ffffff;
+  border-top: 1px solid #f0e6e7;
+  border-bottom: 1px solid #f0e6e7;
+}
+
+.story-section-header {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 70px;
+}
+
+.story-main-heading {
+  font-size: 40px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.025em;
+  margin: 6px 0 14px;
+  line-height: 1.2;
+}
+
+.story-sub-heading {
+  font-size: 16.5px;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.zigzag-container {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+
+.zigzag-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.zigzag-row.reverse .zigzag-media {
+  order: 2;
+}
+
+.zigzag-row.reverse .zigzag-content {
+  order: 1;
+}
+
+.zigzag-media {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+  aspect-ratio: 4 / 3;
+}
+
+.zigzag-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.zigzag-media:hover .zigzag-img {
+  transform: scale(1.03);
+}
+
+.zigzag-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.zigzag-tag {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: #881421;
+  background: #fdf2f4;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  border: 1px solid #fce7eb;
+}
+
+.zigzag-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 0 0 16px;
+}
+
+.zigzag-text {
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: #4b5563;
+  margin: 0 0 22px;
+}
+
+.zigzag-highlight-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #374151;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  padding: 8px 16px;
+  border-radius: 12px;
+}
+
+.highlight-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.highlight-dot.red {
+  background-color: #881421;
+}
+
+.highlight-dot.green {
+  background-color: #16a34a;
+}
+
+/* ─── 4. Few Steps to Begin Section ──────────────────────────────────────── */
+.how-it-works-section {
+  padding: 100px 0;
+  background-color: #faf8f7;
+}
+
+.how-header-centered {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 56px;
+}
+
+.how-title {
+  font-size: 38px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.02em;
+  margin: 6px 0 10px;
+}
+
+.how-subtitle {
+  font-size: 16px;
+  color: #6b7280;
+}
+
+.how-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.how-step-card {
+  background-color: #ffffff;
+  padding: 38px 30px;
+  border-radius: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  border: 1px solid #f0e6e7;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.04), 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.how-step-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 18px 40px rgba(136, 20, 33, 0.08), 0 4px 10px rgba(0, 0, 0, 0.03);
+  border-color: rgba(136, 20, 33, 0.2);
+}
+
+.how-step-card.step-one,
+.how-step-card.step-two,
+.how-step-card.step-three {
+  background-color: #ffffff;
+}
+
+.step-number-badge {
+  font-size: 20px;
+  font-weight: 800;
+  color: #881421;
+  font-family: var(--font-cursive);
+  margin-bottom: 20px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #faf4f5;
+  border: 1px solid rgba(136, 20, 33, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(136, 20, 33, 0.06);
+}
+
+.step-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1f2937;
+  letter-spacing: -0.01em;
+  margin: 0 0 12px;
+  line-height: 1.3;
+}
+
+.step-description {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* ─── 5. Embedded Sign-Up Section ────────────────────────────────────────── */
+.embedded-signup-section {
+  padding: 60px 0 100px;
+  background-color: #ffffff;
+  border-top: 1px solid #f0e6e7;
+}
+
+.embedded-signup-card {
+  background-color: #ffffff;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(44, 32, 35, 0.08), 0 4px 14px rgba(0, 0, 0, 0.03);
+  border: 1px solid #ebdada;
+  display: grid;
+  grid-template-columns: 1.05fr 1.25fr;
+  min-height: 580px;
+}
+
+/* Left Perks Column */
+.signup-perks-column {
+  position: relative;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.signup-perks-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.signup-perks-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(20, 10, 12, 0.94) 0%, rgba(136, 20, 33, 0.72) 65%, rgba(0, 0, 0, 0.45) 100%);
+}
+
+.signup-perks-content {
+  position: relative;
+  z-index: 2;
+}
+
+.perks-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+}
+
+.perks-heading {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.3;
+  color: #ffffff;
+  margin: 0;
+}
+
+.perks-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.perks-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.perk-check-icon {
+  color: #86efac;
+  flex-shrink: 0;
+}
+
+.perks-footer-note {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+/* Right Quick Sign Up Form */
+.signup-form-column {
+  padding: 48px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.quick-form-header {
+  margin-bottom: 22px;
+}
+
+.form-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #881421;
+  text-transform: uppercase;
+}
+
+.quick-form-title {
+  font-size: 26px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.02em;
+  margin: 4px 0 6px;
+}
+
+.quick-form-sub {
+  font-size: 13.5px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.quick-form-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.quick-signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.quick-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.quick-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.quick-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.quick-field input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #111827;
+  background-color: #ffffff;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.quick-field input:focus {
+  border-color: #881421;
+  box-shadow: 0 0 0 3px rgba(136, 20, 33, 0.1);
+}
+
+.quick-pwd-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.quick-pwd-wrap input {
+  padding-right: 38px;
+}
+
+.quick-eye-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.btn-quick-submit {
+  width: 100%;
+  background-color: #881421;
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  margin-top: 6px;
+  box-shadow: 0 4px 14px rgba(136, 20, 33, 0.2);
+  transition: background-color 0.15s ease;
+}
+
+.btn-quick-submit:hover:not(:disabled) {
+  background-color: #700f1a;
+}
+
+.btn-quick-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.quick-form-footer {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.quick-login-link {
+  background: none;
+  border: none;
+  color: #881421;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+/* ─── 6. Modern Contact & Footer ─────────────────────────────────────────── */
+.home-footer {
+  background-color: #1c1517;
+  color: #ffffff;
+  padding: 80px 0 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-contact-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr;
+  gap: 56px;
+  padding-bottom: 56px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-col-brand .footer-brand-title {
+  font-size: 32px;
+  color: #ffffff;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.footer-brand-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 380px;
+  margin-bottom: 24px;
+}
+
+.footer-social-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-social-icons a {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.85);
+  transition: all 0.15s ease;
+}
+
+.footer-social-icons a:hover {
+  background: #881421;
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer-col-title {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.footer-col-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-col-links a,
+.footer-link-btn {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.15s ease;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  font-family: inherit;
+}
+
+.footer-col-links a:hover,
+.footer-link-btn:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Scroll margin so sticky / floating navbar doesn't overlap titles */
+#home,
+#upcoming-events,
+#story,
+#how-it-works,
+#contact {
+  scroll-margin-top: 88px;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-list li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.contact-icon {
+  color: #ffd2d7;
+  flex-shrink: 0;
+}
+
+.contact-list a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 28px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ─── Responsive Adjustments ──────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero-headline {
+    font-size: 46px;
+  }
+  /* cards go 2-col on medium screens */
+  .upcoming-events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .how-steps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .embedded-signup-card {
+    grid-template-columns: 1fr;
+  }
+  .footer-contact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-banner-fullscreen {
+    padding: 100px 16px 60px;
+    border-radius: 0 0 32px 32px;
+  }
+  .hero-headline {
+    font-size: 34px;
+  }
+  .hero-subtext {
+    font-size: 15px;
+  }
+  .hero-search-card {
+    flex-direction: row;
+    align-items: center;
+    border-radius: 999px;
+    padding: 6px 8px 6px 14px;
+    gap: 8px;
+    max-width: 480px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .hero-search-input-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+  .btn-hero-search {
+    padding: 8px 16px;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+  .hero-search-or,
+  .btn-hero-browse {
+    display: none;
+  }
+  .hero-quick-stats {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    justify-content: center;
+    max-width: 90%;
+  }
+  .stat-divider {
+    display: none;
+  }
+  .upcoming-events-grid {
+    grid-template-columns: 1fr;
+  }
+  .zigzag-row {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .zigzag-row.reverse .zigzag-media {
+    order: 1;
+  }
+  .zigzag-row.reverse .zigzag-content {
+    order: 2;
+  }
+  .how-steps-grid {
+    grid-template-columns: 1fr;
+  }
+  .signup-form-column {
+    padding: 32px 20px;
+  }
+  .quick-row {
+    grid-template-columns: 1fr;
+  }
+  .footer-contact-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HOME PAGE — MOBILE 390px × 844px
+   Only adds mobile behavior. Desktop layout is UNTOUCHED.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 430px) {
+
+  /* ── 1. Hero section — fit mobile height comfortably ────────────────────── */
+  .hero-banner-fullscreen {
+    min-height: 100svh;
+    padding: 90px 16px 56px;
+    border-radius: 0 0 28px 28px;
+  }
+
+  .hero-content-center {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  .hero-badge-pill {
+    font-size: 10.5px;
+    padding: 5px 12px;
+    margin-bottom: 14px;
+  }
+
+  .hero-headline {
+    font-size: 30px;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    line-height: 1.15;
+  }
+
+  .hero-subtext {
+    font-size: 14px;
+    margin-bottom: 24px;
+    padding: 0 4px;
+  }
+
+  /* ── 2. Hero search bar — sleek, compact horizontal pill on mobile ───────── */
+  .hero-search-card {
+    flex-direction: row !important;
+    align-items: center !important;
+    border-radius: 999px !important;
+    padding: 5px 6px 5px 14px !important;
+    gap: 8px !important;
+    margin-bottom: 24px !important;
+    max-width: 350px !important;
+    width: 100% !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .hero-search-input-wrap {
+    flex: 1 !important;
+    width: auto !important;
+    gap: 6px !important;
+  }
+
+  .hero-search-input {
+    font-size: 13px !important;
+  }
+
+  .btn-hero-search {
+    width: auto !important;
+    padding: 8px 16px !important;
+    font-size: 12.5px !important;
+    border-radius: 999px !important;
+    flex-shrink: 0 !important;
+  }
+
+  /* Hide the "or Browse" in search bar on mobile — keeps it clean and slim */
+  .hero-search-or,
+  .btn-hero-browse {
+    display: none !important;
+  }
+
+  /* ── 3. Quick stats bar / pills — wrap cleanly on mobile ─────────────────── */
+  .hero-quick-stats {
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    gap: 8px 14px !important;
+    padding: 8px 16px !important;
+    border-radius: 999px !important;
+    justify-content: center !important;
+    max-width: 350px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .quick-stat-item {
+    flex: 1 1 auto;
+    min-width: 70px;
+    text-align: center;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stat-number {
+    font-size: 14px !important;
+    line-height: 1.15;
+  }
+
+  .stat-label {
+    font-size: 9.5px !important;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  /* ── 4. Upcoming events section ──────────────────────────────────────────── */
+  .upcoming-events-section {
+    padding: 48px 0;
+  }
+
+  .section-container {
+    padding: 0 16px;
+  }
+
+  .upcoming-events-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px;
+  }
+
+  /* Section headers */
+  .section-heading {
+    font-size: 26px;
+  }
+
+  /* ── 5. CTA "Explore More" button — full width ───────────────────────────── */
+  .explore-more-btn,
+  .btn-cta-explore {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── 6. Campus story / zigzag section ────────────────────────────────────── */
+  .zigzag-section {
+    padding: 48px 0;
+  }
+
+  .zigzag-row {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  /* Both reversed rows — reset order on mobile */
+  .zigzag-row.reverse .zigzag-media,
+  .zigzag-row.reverse .zigzag-content {
+    order: unset !important;
+  }
+
+  .zigzag-media img {
+    border-radius: 16px;
+    height: 220px;
+    object-fit: cover;
+  }
+
+  .zigzag-content {
+    padding: 0;
+  }
+
+  .zigzag-heading {
+    font-size: 22px;
+  }
+
+  /* ── 7. How it works — single column ─────────────────────────────────────── */
+  .how-it-works-section {
+    padding: 48px 0;
+  }
+
+  .how-steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+
+  .how-step-card {
+    padding: 20px 18px;
+    border-radius: 16px;
+  }
+
+  /* ── 8. Quick signup section — single column ──────────────────────────────── */
+  .embedded-signup-section {
+    padding: 40px 0;
+  }
+
+  .embedded-signup-card {
+    grid-template-columns: 1fr !important;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  /* Signup section — stack the two columns vertically on mobile */
+  .signup-perks-column {
+    display: none; /* Hide the decorative image/perks panel on tiny screens */
+  }
+
+  .signup-form-column {
+    padding: 28px 20px;
+  }
+
+  .quick-row {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  /* ── 9. Footer ────────────────────────────────────────────────────────────── */
+  .home-footer {
+    padding: 48px 0 32px;
+  }
+
+  .footer-contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px;
+    padding-bottom: 28px;
+  }
+
+  .footer-col-brand .footer-brand-title {
+    font-size: 26px;
+  }
+
+  .footer-brand-desc {
+    font-size: 13px;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+    padding-top: 20px;
+  }
+
+  /* Social icons row — center on mobile */
+  .footer-social-icons {
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  /* ── 10. Navbar floating pill — full width on mobile ─────────────────────── */
+  .navbar.navbar-hero-overlay {
+    top: 10px;
+    padding: 0 12px;
+  }
+
+  .navbar.navbar-hero-overlay .navbar-container {
+    max-width: 100%;
+    padding: 10px 14px;
+    border-radius: 14px;
+  }
+
+  /* ── 11. AuthModal — full screen sheet on mobile ─────────────────────────── */
+  .auth-modal-overlay {
+    align-items: flex-end !important;
+    padding: 0 !important;
+  }
+
+  .auth-modal-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    max-height: 95svh !important;
+    overflow-y: auto !important;
+  }
+
+}
