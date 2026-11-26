@@ -5,8 +5,8 @@ const BASE = import.meta.env.PROD
   ? '/api'
   : (import.meta.env.VITE_API_URL || '/api')
 
-// Read JWT from localStorage (set by AuthContext on login/verify)
-const getToken = () => localStorage.getItem('token')
+// Read JWT from sessionStorage (set by AuthContext on login/verify)
+const getToken = () => sessionStorage.getItem('token')
 
 // Generic request helper
 const request = async (path, options = {}) => {
@@ -104,7 +104,7 @@ export const deleteUser = (userId) => request(`/auth/users/${userId}`, { method:
 
 /** Upload image file to server */
 export const uploadImage = async (file) => {
-  const token = localStorage.getItem('token')
+  const token = sessionStorage.getItem('token')
   const formData = new FormData()
   formData.append('image', file)
 

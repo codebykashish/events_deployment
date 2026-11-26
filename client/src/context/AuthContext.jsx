@@ -4,7 +4,7 @@ const AuthContext = createContext(null)
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
-  const [token, setToken] = useState(() => localStorage.getItem('token'))
+  const [token, setToken] = useState(() => sessionStorage.getItem('token'))
   // loading stays true until the initial token check is done.
   // We also keep it true while login/verifyOtp are in flight so that
   // ProtectedRoute never sees a brief window where token exists but user is null.
@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   // Verify stored token on initial app load
   useEffect(() => {
     const fetchCurrentUser = async () => {
-      const savedToken = localStorage.getItem('token')
+      const savedToken = sessionStorage.getItem('token')
       if (!savedToken) {
         setLoading(false)
         return
@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
           setToken(savedToken)
         } else {
           // Token is invalid or expired — clear everything
-          localStorage.removeItem('token')
+          sessionStorage.removeItem('token')
           setUser(null)
           setToken(null)
         }
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Persist token before updating state so api.js reads it immediately
-      localStorage.setItem('token', data.token)
+      sessionStorage.setItem('token', data.token)
       setToken(data.token)
       setUser(data.user)
       return data.user
@@ -125,7 +125,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       // Persist token before updating state so api.js reads it immediately
-      localStorage.setItem('token', data.token)
+      sessionStorage.setItem('token', data.token)
       setToken(data.token)
       setUser(data.user)
       return data.user
@@ -154,7 +154,7 @@ export const AuthProvider = ({ children }) => {
 
   // Update profile handler
   const updateProfile = async (profileData) => {
-    const savedToken = localStorage.getItem('token') || token
+    const savedToken = sessionStorage.getItem('token') || token
     const response = await fetch(`${apiUrl}/auth/profile`, {
       method: 'PUT',
       headers: {
@@ -178,7 +178,7 @@ export const AuthProvider = ({ children }) => {
 
   // Logout handler
   const logout = () => {
-    localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
     setToken(null)
     setUser(null)
     window.location.href = '/'

@@ -53,7 +53,7 @@ const VerifyOtp = () => {
       const loggedInUser = await verifyOtp(email, cleanCode)
       setSuccess('Verified successfully! Redirecting to your dashboard...')
       // Hard redirect so the app re-mounts with the fresh token already in
-      // localStorage, eliminating the race where navigate() fires before
+      // sessionStorage, eliminating the race where navigate() fires before
       // AuthContext state has propagated to ProtectedRoute.
       setTimeout(() => {
         window.location.href = loggedInUser?.role === 'admin' ? '/admin' : '/dashboard'

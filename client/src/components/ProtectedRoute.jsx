@@ -5,10 +5,10 @@ import { useAuth } from '../context/AuthContext'
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { user, isAuthenticated, loading } = useAuth()
 
-  // A token in localStorage means an auth operation is in-flight (login / verifyOtp).
+  // A token in sessionStorage means an auth operation is in-flight (login / verifyOtp).
   // Keep showing the loading screen until AuthContext resolves the user, so we never
   // briefly redirect an authenticated user back to the home page.
-  const hasStoredToken = Boolean(localStorage.getItem('token'))
+  const hasStoredToken = Boolean(sessionStorage.getItem('token'))
 
   if (loading || (hasStoredToken && !user)) {
     return (

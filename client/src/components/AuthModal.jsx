@@ -196,7 +196,7 @@ const AuthModal = () => {
       resetFormFields()
       closeAuthModal()
       // Use a hard redirect so the entire app re-mounts cleanly with the
-      // fresh token already in localStorage — avoids any React-Router race
+      // fresh token already in sessionStorage — avoids any React-Router race
       // where navigate() fires before AuthContext state has propagated.
       window.location.href = loggedInUser.role === 'admin' ? '/admin' : '/dashboard'
     } catch (err) {
