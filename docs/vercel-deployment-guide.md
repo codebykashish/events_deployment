@@ -1,50 +1,54 @@
-# Step-by-Step Guide: Deploying a Full-Stack MERN Monorepo on Vercel
+# Complete Step-by-Step Guide: Deploying Eventpatro (MERN Monorepo) on Vercel
 
-This guide documents the exact process used to deploy **Eventpatro** (a full-stack MERN application with a Vite/React frontend, Express.js backend, and MongoDB Atlas database) to **Vercel** under a single custom domain using **Vercel Services**.
+This document provides a comprehensive, reproducible walkthrough for deploying **Eventpatro** — a full-stack MERN application (React 19 + Vite frontend, Node.js + Express backend, MongoDB Atlas database, Cloudinary media storage, and Nodemailer email delivery) — onto **Vercel** as a unified multi-service project under a single domain.
 
 ---
 
 ## Architecture Overview
 
 ```
-                        ┌────────────────────────────────────────┐
-                        │           Vercel Single Domain         │
-                        │        (e.g., your-app.vercel.app)     │
-                        └───────────────────┬────────────────────┘
-                                            │
-                    ┌───────────────────────┴───────────────────────┐
-                    │                                               │
-             Routes to /api/*                                Routes to /*
-                    │                                               │
-                    ▼                                               ▼
-     ┌─────────────────────────────┐                 ┌─────────────────────────────┐
-     │       Backend Service       │                 │      Frontend Service       │
-     │      Express.js / Node      │                 │         Vite / React        │
-     │     (server/index.js)       │                 │      (client/index.html)    │
-     └──────────────┬──────────────┘                 └─────────────────────────────┘
-                    │
-                    ▼
-     ┌─────────────────────────────┐
-     │      MongoDB Atlas          │
-     │   Cloud Database Cluster    │
-     └─────────────────────────────┘
+                           ┌────────────────────────────────────────┐
+                           │          Vercel Single Domain          │
+                           │      (e.g., your-app.vercel.app)       │
+                           └───────────────────┬────────────────────┘
+                                               │
+                       ┌───────────────────────┴───────────────────────┐
+                       │                                               │
+                Routes to /api/*                                Routes to /*
+                       │                                               │
+                       ▼                                               ▼
+        ┌─────────────────────────────┐                 ┌─────────────────────────────┐
+        │       Backend Service       │                 │      Frontend Service       │
+        │      Express.js / Node      │                 │         Vite / React        │
+        │     (server/index.js)       │                 │     (client/index.html)     │
+        └──────────────┬──────────────┘                 └─────────────────────────────┘
+                       │
+                       ├───────────────────────────────┐
+                       ▼                               ▼
+        ┌─────────────────────────────┐ ┌─────────────────────────────┐
+        │        MongoDB Atlas        │ │     Cloudinary CDN          │
+        │    Cloud Database Cluster   │ │    Image & Poster Storage   │
+        └─────────────────────────────┘ └─────────────────────────────┘
 ```
+
+Both applications share one domain and deployment lifecycle, completely eliminating cross-origin resource sharing (CORS) issues and cookie partition restrictions between frontend and backend.
 
 ---
 
-## Step 1: Clean Up Old Deployment & AWS Configurations
+## 1. Migration from AWS to Vercel (Cleanup)
 
-Before switching to Vercel, legacy deployment files from EC2/AWS were removed:
-1. Removed `.git` to break tracking from any previous repository and start with a clean Git history:
+Before setting up Vercel, all legacy infrastructure files from earlier AWS EC2 deployments were removed to prevent conflicts and ensure a clean Git history:
+
+1. **Remove Old Git History**:
    ```bash
    rm -rf .git
    ```
-2. Removed AWS and EC2 files:
-   - `infra/` (CloudFormation templates, Nginx configuration, bash setup scripts)
-   - `.github/workflows/deploy.yml` (Old GitHub Actions EC2 deployment workflow)
-   - `server/ecosystem.config.cjs` (PM2 process file for persistent EC2 servers)
-   - AWS deployment markdown documentation
-3. Initialized a clean repository and linked to the new GitHub repo:
+2. **Remove AWS / EC2 Specific Files**:
+   - `infra/` folder (CloudFormation templates, Nginx reverse proxy configs, Ubuntu EC2 setup scripts).
+   - `.github/workflows/deploy.yml` (GitHub Actions workflow for AWS SSH deployments).
+   - `server/ecosystem.config.cjs` (PM2 process manager config for persistent VM servers).
+   - AWS deployment markdown documentation files.
+3. **Initialize New Repository**:
    ```bash
    git init -b main
    git remote add origin https://github.com/codebykashish/events_deployment.git
@@ -52,11 +56,12 @@ Before switching to Vercel, legacy deployment files from EC2/AWS were removed:
 
 ---
 
-## Step 2: Configure Vercel Services (`vercel.json`)
+## 2. Vercel Multi-Services Configuration
 
-Vercel supports **Multi-Service Projects**, allowing both the Vite frontend and the Express backend to live in the same repository, deploy together, and share the same domain (eliminating CORS and cookie issues).
+Vercel natively supports deploying multiple frontend and backend services from a single repository using **Vercel Services**.
 
-Create `vercel.json` in the **root** directory:
+### Root Configuration: `vercel.json`
+Place this in the repository root directory:
 
 ```json
 {
@@ -81,29 +86,40 @@ Create `vercel.json` in the **root** directory:
     {
       "source": "/(.*)",
       "destination": {
-        "service": "client",
-        "path": "/index.html"
+        "service": "client"
       }
     }
   ]
 }
 ```
 
-### Key Highlights of this Configuration:
-- **`services.client`**: Points to the `client/` folder with the `vite` framework preset.
-- **`services.server`**: Points to the `server/` folder with the `express` framework preset.
-- **`rewrites`**:
-  - `/api/(.*)` forwards all API calls to the Express `server` service.
-  - `/(.*)` with `"path": "/index.html"` handles **React Router Single Page Application (SPA)** fallback, preventing 404 errors when reloading routes like `/dashboard` or `/login`.
+* **`services.client`**: Instructs Vercel to build the frontend inside `client/` using Vite.
+* **`services.server`**: Instructs Vercel to build and serve the backend inside `server/` using Express.
+* **`rewrites`**: Dispatches requests matching `/api/*` to the Express backend and all other requests to the Vite client.
+
+### Client SPA Routing Configuration: `client/vercel.json`
+To support client-side routing (React Router v7) and prevent `404 NOT_FOUND` errors when refreshing routes such as `/dashboard` or `/login`, place a scoped `vercel.json` inside the `client/` directory:
+
+```json
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
+```
 
 ---
 
-## Step 3: Adapt Express Backend for Serverless
+## 3. Adapting the Express Backend for Serverless
 
-In standard server environments (EC2, local), Express runs a persistent process with `app.listen(PORT)`. On Vercel, requests are handled serverless.
+In a standard VM or container environment, Express runs indefinitely using `app.listen(PORT)`. In Vercel, requests are dispatched serverlessly. The following adaptations were made:
 
-### 1. Export the Express Application
-Create `server/index.js` as the entrypoint for the service:
+### A. Dedicated Export Entry Point (`server/index.js`)
+Created `server/index.js` to export the Express application instance for Vercel, while preserving `server/src/server.js` for local development (`npm run dev`):
+
 ```javascript
 // server/index.js
 const app = require('./src/app');
@@ -111,9 +127,9 @@ const app = require('./src/app');
 module.exports = app;
 ```
 
-### 2. Cache MongoDB Connection
-In serverless functions, a new container can spin up per request or be reused. To avoid opening hundreds of database connections:
-In `server/src/config/db.js`:
+### B. MongoDB Atlas Connection Caching (`server/src/config/db.js`)
+Serverless containers may spin up on demand. Recreating database connections on every request exhausts MongoDB Atlas connection pools. Connection caching using `global.mongoose` ensures connection reuse across warm function invocations:
+
 ```javascript
 const mongoose = require('mongoose');
 
@@ -147,8 +163,9 @@ const connectDB = async () => {
 module.exports = connectDB;
 ```
 
-### 3. Ensure DB Connection Middleware Runs First
-In `server/src/app.js`, attach a middleware before routes so every API call awaits the database connection:
+### C. Pre-Route Database Middleware (`server/src/app.js`)
+To guarantee that the database is connected before any controller or route handler executes, an async middleware was mounted at the top of Express:
+
 ```javascript
 const connectDB = require('./config/db');
 
@@ -164,10 +181,14 @@ app.use(async (req, res, next) => {
 });
 ```
 
-### 4. Prevent Read-Only Filesystem Errors
-Vercel serverless environments have a read-only filesystem. If your code writes to disk locally (e.g., local uploads), wrap any directory creation or point to `/tmp`:
+### D. Safe Filesystem Handling for Serverless (`server/src/routes/upload.routes.js`)
+Vercel serverless environments enforce a read-only filesystem (except `/tmp`). Directory creation checks were made resilient with a `/tmp/uploads` fallback:
+
 ```javascript
-const uploadDir = process.env.VERCEL ? '/tmp/uploads' : path.join(__dirname, '../../uploads');
+const uploadDir = process.env.VERCEL
+  ? '/tmp/uploads'
+  : path.join(__dirname, '../../uploads');
+
 try {
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
@@ -179,70 +200,82 @@ try {
 
 ---
 
-## Step 4: Configure MongoDB Atlas
+## 4. MongoDB Atlas Configuration
 
-1. Log in to [MongoDB Atlas](https://cloud.mongodb.com/).
-2. Under **Security** -> **Network Access**:
-   - Add IP address: `0.0.0.0/0` (Allow access from anywhere). Serverless functions run on dynamic IPs, so restricting by IP is not possible.
-3. Under **Database Access**:
-   - Ensure you have a database user (e.g. `kashishdhamistudy_db_user`) with read/write privileges.
-4. Construct your connection string:
+1. Log in to [MongoDB Atlas](https://cloud.mongodb.com).
+2. Go to **Network Access** under Security:
+   - Click **Add IP Address** -> Select **Allow Access From Anywhere (`0.0.0.0/0`)**. Serverless functions run on dynamic cloud IP addresses, so restricting by static IP is not supported.
+3. Go to **Database Access**:
+   - Ensure a database user exists with read/write permissions to the `eventpatro` database.
+4. Construct the Atlas URI:
    ```
-   mongodb+srv://<username>:<password>@<cluster-url>/eventpatro?retryWrites=true&w=majority
+   mongodb+srv://<username>:<password>@<cluster-url>/eventpatro?retryWrites=true&w=majority&appName=eventpatro-db
    ```
 
 ---
 
-## Step 5: Deploy to Vercel
+## 5. Environment Variables Configuration
 
-1. Go to [vercel.com](https://vercel.com) and log in.
-2. Click **Add New...** -> **Project**.
-3. Select your repository (`events_deployment`) and click **Import**.
-4. In **Project Configuration**:
-   - Keep the Root Directory as `./`.
-   - Vercel automatically detects the `services` defined in `vercel.json`.
-5. Under **Environment Variables**, add the following (check **Production**, **Preview**, and **Development** for each):
+Set these variables in your Vercel Project under **Settings -> Environment Variables**. Check all three environments: **Production**, **Preview**, and **Development**.
 
-| Variable Name | Description |
-| :--- | :--- |
-| `MONGODB_URI` | MongoDB Atlas connection string |
-| `NODE_ENV` | `production` |
-| `JWT_SECRET` | Secret key for signing user tokens |
-| `JWT_EXPIRES_IN` | `7d` |
-| `SMTP_USER` | Gmail address for sending OTP verification |
-| `SMTP_PASS` | Gmail 16-character App Password |
-| `EMAIL_FROM_NAME` | Display sender name in emails |
-| `CLOUDINARY_CLOUD_NAME` | Cloudinary cloud name for image uploads |
-| `CLOUDINARY_API_KEY` | Cloudinary API Key |
-| `CLOUDINARY_API_SECRET` | Cloudinary API Secret |
-
-6. Click **Deploy**.
+| Variable | Required | Description | Example / Format |
+| :--- | :--- | :--- | :--- |
+| `MONGODB_URI` | **Yes** | MongoDB Atlas connection string | `mongodb+srv://user:pass@cluster.mongodb.net/eventpatro?retryWrites=true&w=majority` |
+| `NODE_ENV` | **Yes** | Node environment mode | `production` |
+| `JWT_SECRET` | **Yes** | Secret string for signing auth tokens | Any secure random string |
+| `JWT_EXPIRES_IN`| No (defaults to 7d) | Token expiration duration | `7d` |
+| `SMTP_USER` | **Yes** | Gmail address for sending OTP codes | `your-email@gmail.com` |
+| `SMTP_PASS` | **Yes** | Gmail 16-character App Password | `xxxx xxxx xxxx xxxx` |
+| `EMAIL_FROM_NAME`| **Yes** | Name displayed on sent emails | `Eventpatro Sunway` |
+| `CLOUDINARY_CLOUD_NAME` | **Yes** | Cloudinary Cloud Name | *(From Cloudinary Console)* |
+| `CLOUDINARY_API_KEY` | **Yes** | Cloudinary API Key | *(From Cloudinary Console)* |
+| `CLOUDINARY_API_SECRET` | **Yes** | Cloudinary API Secret | *(From Cloudinary Console)* |
 
 ---
 
-## Step 6: Seed Initial Data (Admin & Events)
+## 6. Database Seeding
 
-If deploying to a fresh database, run the seed scripts against your Atlas cluster:
+When deploying to a fresh database, run the seed scripts from your local terminal against MongoDB Atlas to seed the admin account and sample events:
 
 ```bash
+# 1. Seed administrator account (admin@sunway.edu.np / Admin@Sunway2026)
 MONGODB_URI="<your-mongodb-atlas-uri>" node server/src/scripts/seedAdmin.js
+
+# 2. Seed initial campus events
 MONGODB_URI="<your-mongodb-atlas-uri>" node server/src/scripts/seedEvents.js
 ```
 
-This creates the default administrator (`admin@sunway.edu.np`) and populates the sample events shown on the homepage.
+---
+
+## 7. Troubleshooting & Root Cause Analysis
+
+### Error 1: `Unexpected token 'A', "A server error..." is not valid JSON`
+* **Cause**: The serverless function crashed during module evaluation before sending a JSON response. This was triggered by top-level synchronous `fs.mkdirSync()` attempting to write to the read-only filesystem.
+* **Fix**: Wrapped filesystem calls in `try/catch` with a `/tmp` fallback, and ensured `server/index.js` cleanly exports `app`.
+
+### Error 2: `500 FUNCTION_INVOCATION_FAILED` on API Routes
+* **Cause**: Asynchronous `connectDB()` was running in the background without being awaited before route handlers executed queries like `Event.find()`.
+* **Fix**: Placed an `await connectDB()` middleware at the very top of `server/src/app.js` before all route registrations.
+
+### Error 3: `404 NOT_FOUND` on Reloading `/dashboard` or `/login`
+* **Cause**: Vite is a Single Page Application (SPA). Navigating or refreshing a non-root route caused Vercel to search for a literal `dashboard` or `dashboard.html` static file, which does not exist.
+* **Fix**: Created `client/vercel.json` with a rewrite from `/(.*)` to `/index.html`, allowing React Router v7 to handle the client URL.
+
+### Error 4: `The vercel.json schema validation failed: routes[0].dest should be string`
+* **Cause**: Mixing legacy `routes` syntax with Vercel Services destination objects (`{ "service": "..." }`).
+* **Fix**: Maintained pure `rewrites` syntax in `vercel.json` and delegated SPA routing to `client/vercel.json`.
 
 ---
 
-## Troubleshooting Common Errors
+## 8. Verifying Your Live Deployment
 
-### 1. `Unexpected token 'A', "A server error..." is not valid JSON`
-- **Cause**: The serverless function crashed during startup or top-level file execution, causing Vercel to return a default 500 HTML error page instead of JSON.
-- **Fix**: Check `server/src/routes/upload.routes.js` for disk writes or unhandled file operations, and ensure `server/index.js` exports the `app`. Check Vercel **Logs** to inspect the stack trace.
-
-### 2. `404 NOT_FOUND` on refreshing routes like `/dashboard` or `/login`
-- **Cause**: Static file servers look for physical HTML files matching the route path.
-- **Fix**: Ensure the `/(.*)` rewrite in `vercel.json` redirects to `"path": "/index.html"`.
-
-### 3. Rate limiter or proxy issues
-- **Cause**: Behind Vercel's edge proxy, Express receives requests from proxy IPs.
-- **Fix**: Add `app.set('trust proxy', 1);` in `app.js`.
+1. **API Health Check**:
+   Visit `https://<your-project>.vercel.app/api/health`
+   Expected response:
+   ```json
+   { "success": true, "message": "Eventpatro server is running." }
+   ```
+2. **Frontend Landing Page**:
+   Visit `https://<your-project>.vercel.app/` — verify that campus events (Hackathon, Cultural Fest, AI Masterclass, etc.) load from MongoDB Atlas.
+3. **Authentication & Protected Routes**:
+   Log in with `admin@sunway.edu.np` / `Admin@Sunway2026`. Verify redirection to `/dashboard` and perform a browser refresh (`Ctrl + Shift + R`) to confirm persistent SPA routing.
