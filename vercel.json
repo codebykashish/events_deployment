@@ -10,16 +10,19 @@
       "framework": "express"
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": {
+      "src": "/api/(.*)",
+      "dest": {
         "service": "server"
       }
     },
     {
-      "source": "/(.*)",
-      "destination": {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": {
         "service": "client",
         "path": "/index.html"
       }
