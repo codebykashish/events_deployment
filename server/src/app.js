@@ -4,11 +4,27 @@
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
+const connectDB = require('./config/db');
 
 const app = express();
 
-// Trust Vercel / reverse proxy headers (needed for express-rate-limit and secure cookies)
+// Trust Vercel / reverse proxy headers
 app.set('trust proxy', 1);
+
+// Ensure MongoDB is connected before running route handlers
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error('Database connection middleware error:', error.message);
+    res.status(500).json({
+      success: false,
+      message: 'Database connection failed',
+      error: error.message,
+    });
+  }
+});
 
 // --- Security middleware ---
 app.use(helmet({
@@ -17,7 +33,7 @@ app.use(helmet({
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || true, // Allow same-origin / all Vercel domains
+    origin: process.env.CLIENT_URL || true,
     credentials: true,
   })
 );
